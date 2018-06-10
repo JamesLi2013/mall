@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.mall.mapper.VisitPageMapper">
+    <resultMap id="VisitPageMap" type="com.james.mall.bean.VisitPage">
+        <result property="pageName" column="page_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.james.mall.bean.VisitPage">
+        INSERT INTO visit_page (uid,page_name,keyword,city,created) VALUES (#{uid,jdbcType=BIGINT},#{pageName,jdbcType=VARCHAR},#{keyword,jdbcType=VARCHAR},
+                                                                            #{city,jdbcType=VARCHAR},#{created,jdbcType=TIMESTAMP});
+    </insert>
+    <update id="update" parameterType="com.james.mall.bean.VisitPage">
+        UPDATE visit_page
+        <set>
+            <if test="created!=null">
+                =#{created,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT};
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM visit_page
+        WHERE id = #{id,jdbcType=BIGINT};
+    </delete>
+    <select id="findById" parameterType="java.lang.Long" resultMap="VisitPageMap">
+        SELECT
+        id
+        FROM visit_page
+        WHERE id = #{id,jdbcType=BIGINT};
+    </select>
+    <select id="findAll" resultMap="VisitPageMap">
+        SELECT id,page_name,keyword,created,city
+        FROM visit_page;
+    </select>
+</mapper>

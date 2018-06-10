@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.mall.mapper.SkuMapper">
+    <resultMap id="SkuMap" type="com.james.mall.bean.Sku">
+        <result property="productId" column="product_id" jdbcType="BIGINT"/>
+        <result property="customProps" column="custom_props" jdbcType="VARCHAR"/>
+        <result property="saleCount" column="sale_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.james.mall.bean.Sku">
+        INSERT INTO sku (product_id, price, color, meal, custom_props, quantity, sale_count, `status`)
+        VALUES (#{productId,jdbcType=BIGINT},#{price,jdbcType=BIGINT},
+                #{color,jdbcType=VARCHAR},#{meal,jdbcType=VARCHAR},
+                #{customProps,jdbcType=VARCHAR},#{quantity,jdbcType=INTEGER},
+                #{saleCount,jdbcType=INTEGER},#{status,jdbcType=INTEGER});
+    </insert>
+    <insert id="insertList"  parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+
+        INSERT INTO sku (product_id, price, color, meal, custom_props, quantity, sale_count, `status`)
+        VALUES
+            <foreach collection="list" item="item" index="index" separator=",">
+                (#{item.productId,jdbcType=BIGINT},#{item.price,jdbcType=BIGINT},
+                #{item.color,jdbcType=VARCHAR},#{item.meal,jdbcType=VARCHAR},
+                #{item.customProps,jdbcType=VARCHAR},#{item.quantity,jdbcType=INTEGER},
+                #{item.saleCount,jdbcType=INTEGER},#{item.status,jdbcType=INTEGER})
+            </foreach>
+         ;
+    </insert>
+    <update id="update" parameterType="com.james.mall.bean.Sku">
+        UPDATE sku
+        <set>
+            <if test="productId!=null">
+                product_id=#{productId,jdbcType=BIGINT},
+            </if>
+            <if test="price!=null">
+                price=#{price,jdbcType=BIGINT},
+            </if>
+            <if test="color!=null">
+                color=#{color,jdbcType=VARCHAR},
+            </if>
+            <if test="meal!=null">
+                meal=#{meal,jdbcType=VARCHAR},
+            </if>
+            <if test="customProps!=null">
+                custom_props=#{customProps,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity!=null">
+                quantity=#{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="saleCount!=null">
+                sale_count=#{saleCount,jdbcType=INTEGER},
+            </if>
+            <if test="status!=null">
+                `status`=#{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT};
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM sku
+        WHERE id = #{id,jdbcType=BIGINT};
+    </delete>
+    <select id="findById" parameterType="java.lang.Long" resultMap="SkuMap">
+        SELECT *
+        FROM sku
+        WHERE id = #{id,jdbcType=BIGINT};
+    </select>
+    <select id="findAll" resultMap="SkuMap">
+        SELECT * FROM sku;
+    </select>
+
+    <select id="findByIdIn" resultMap="SkuMap" parameterType="java.util.List">
+        SELECT * FROM sku WHERE id IN(
+            <foreach collection="list" item="item" index="index" separator=",">
+                #{item,jdbcType=BIGINT}
+            </foreach>
+        );
+    </select>
+</mapper>

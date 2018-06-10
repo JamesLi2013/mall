@@ -1,0 +1,171 @@
+1.sql语句熟练,增删改查(join表),建表,增减字段,建索引
+每天建一个表和一个mapper文件,和一个实体,实现增删改查功能.
+
+2.权限模块
+
+
+
+设计模式:
+    AOP
+    IOC
+        Inversion of Control. IoC is also known as dependency injection (DI).
+    单例 工厂 观察者 生产者消费者(用于消息队列) 代理(用于AOP)  组合(用于类加载器)
+算法:
+    常用的几种排序方法:快速排序,选择,冒泡
+    ...
+数据结构:
+    HashMap,链表,二叉树
+
+java
+    IO和NIO:
+        其中IO阻塞模型对于每一个Socket都会创建一个线程进行处理，虽然可以使用线程池解决线程过多的问题，
+            但是底层还是使用线程处理每一个请求，系统的瓶颈在于线程的个数，并且线程多了会导致频繁的线程切换，导致CPU利用效率不高。
+        NIO非阻塞模型采用Reactor模式，一个Reactor线程内部使用一个多路复用器selector，这个selector可以同时注册、
+            监听和轮询成百上千个Channel，一个IO线程可以同时并发处理多个客户端连接，就不会存在频繁的IO线程之间的切换，CPU利用率高。
+java ee
+    Spring
+    Spring Boot
+    Spring MVC
+        返回app需要通用的json返回格式,但是每个controller需要手动进行ResponseUtil.turnData(bean),怎么解决?
+            @ControllerAdvice
+            public class MallResponseBodyAdvice implements ResponseBodyAdvice<Object>{}
+             supports()判断是否拦截和beforeBodyWrite()添加统一格式
+         小问题:controller中String返回类型,Content-Type响应头是text/html;其它是application/json
+        SpringMVC关于json、xml自动转换的原理研究[附带源码分析]:http://www.cnblogs.com/fangjian0423/p/springMVC-xml-json-convert.html
+        SpringMVC处理流程图  待验证:http://fangjian0423.github.io/2017/07/28/springmvc-process-write-by-processon/
+
+        官方文档:https://docs.spring.io/spring/docs/4.3.x/spring-framework-reference/html/mvc.html
+        DispatcherServlet 使用前端控制器模式:(图片 Figure 22.1. The request processing workflow in Spring Web MVC )
+            一个请求首先经过前端控制器(DispatcherServlet)
+                ->委托请求到真正的控制器->处理请求->创建model->委托呈现model的响应 ->前端控制器
+                ->将model渲染到View模板->前端控制器
+            再由前端控制器返回响应.
+            具体代码来说:DispatcherServlet中doDispatch方法,获得当前HandlerAdapter RequestMappingHandlerAdapter,
+               RequestMappingHandlerAdapter: handle方法 ->handleInternal()->invokeHandlerMethod()
+               判断ModelAndViewContainer isRequestHandled()
+                ->是,返回View模板
+                ->不是,则将returnValue交给HttpMessageConverter进行处理.
+                    返回类型不同,具体的HttpMessageConverter也不同.返回类型是String,交给StringHttpMessageConverter处理,
+                    如返回类型是其它对象,交个MappingJackson2HttpMessageConverter处理.
+    MyBatis
+
+    Zookeeper
+    Dubbo
+
+mysql
+    1.乐观锁和悲观锁
+        乐观锁:在表中加一个版本字段,在更新时判断版本是否与自己上次读取的一致,一致则进行更新,并将版本号+1.
+            不一致,则重新读取重试.
+            缺点:适用于冲突较少的场景,如果冲突较多,会导致不断重试,影响性能.尤其在高并发场景下,效率非常低.
+        悲观锁:读写时均加锁,使用完才释放锁
+            缺点:如果持有锁时间较长,其它用户会一直等待.
+        乐观锁阻止提交,悲观锁阻止读取.
+    2.主备实现及故障切换 实际操作及总结
+redis
+
+jvm:
+   1.类加载机制
+        类加载的过程包括了加载、验证、准备、解析、初始化五个阶段。在这五个阶段中，加载、验证、准备和初始化这四个阶段发生的顺序是确定的，
+        而解析阶段则不一定，它在某些情况下可以在初始化阶段之后开始，这是为了支持Java语言的运行时绑定
+        1)加载
+            1、通过一个类的全限定名来获取其定义的二进制字节流。
+            2、将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。
+            3、在Java堆中生成一个代表这个类的java.lang.Class对象，作为对方法区中这些数据的访问入口。
+            类加载器分为启动类加载器,扩展类加载器,应用程序类加载器.用户还可以自定义类加载器.
+            子类加载器与父类加载器之间的父子关系并不是通过继承关系来实现的，而是使用组合关系来复用父加载器中的代码。
+            双亲委派模型的工作流程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，
+                而是把请求委托给父加载器去完成，依次向上，因此，所有的类加载请求最终都应该被传递到顶层的启动类加载器中，
+                只有当父加载器在它的搜索范围中没有找到所需的类时，即无法完成该加载，子加载器才会尝试自己去加载该类。
+                使用双亲委派模型来组织类加载器之间的关系，有一个很明显的好处，就是Java类随着它的类加载器（说白了，就是它所在的目录）
+                一起具备了一种带有优先级的层次关系，这对于保证Java程序的稳定运作很重要。
+                例如，类java.lang.Object类存放在JDK\jre\lib下的rt.jar之中，因此无论是哪个类加载器要加载此类，
+                最终都会委派给启动类加载器进行加载，这边保证了Object类在程序中的各种类加载器中都是同一个类。
+        2)验证
+            文件格式的验证、元数据的验证、字节码验证和符号引用验证。
+        3)准备
+            准备阶段是正式为类变量分配内存并设置类变量初始值的阶段，这些内存都将在方法区中分配。
+            仅包括类变量（static）,是数据类型默认的零值（如0、0L、null、false等），而不是被在Java代码中被显式地赋予的值。
+            public static int value = 3；  那么变量value在准备阶段过后的初始值为0，而不是3，因为这时候尚未开始执行任何Java方法，
+            而把value赋值为3的putstatic指令是在程序编译后，存放于类构造器<clinit>（）方法之中的，
+            所以把value赋值为3的动作将在初始化阶段才会执行。
+        4)解析
+            解析动作主要针对类或接口、字段、类方法、接口方法四类符号引用进行
+        5)初始化
+            初始化是类加载过程的最后一步，到了此阶段，才真正开始执行类中定义的Java程序代码
+        [深入Java虚拟机]之四：类加载机制 https://blog.csdn.net/ns_code/article/details/17881581
+   2.垃圾回收
+      java堆内存区域：
+          分为Eden、Survivor和Tenured三种类型区域，其基本的管理过程是：创建的新对象开始放在Eden区，MinorGC
+          后剩余的对象放入Survivor;Survivor里面对象过了一段时间后，依然没有被回收的话，那么这些对象就放入Tenured区；
+          当Tenured区满了以后，就会触发FullGC来全局回收空间。
+      垃圾回收过程:
+          从GC管理角度，Heap分成YoungGen(年轻代），它包括1个Eden和2个Survivor区，建立年轻代的目的是尽可能
+          快的回收那些生命周期短的对象，所以针对这个代，特别建立一个MinorGC来专门对待；另外一个就是OldGen(年老代），
+          它包括1个Tenured区，那些在年轻代经过多次MinorGC就不能回收的对象就往年老代扔，等年老代的Tenured区满了，
+          JVM就会进行FullGC处理。值得说明的是，FullGC作用范围包括：年轻代、年老代和Non-Heap的持久代（PermGen)。
+          由于FullGC—般较为耗时（内存越大，GC耗时越多），而旦在GC过程中整个JVM会临时终止服务，所以为了高性能,
+          合理调整年轻代、年老代的大小，让对象尽量在年轻代就被MinorGC回收，减少FullGC出现的机会。
+      四种类型的垃圾回收器：(知道每种垃圾回收器的作用)
+          串行垃圾回收器（Serial Garbage Collector）
+          并行垃圾回收器（Parallel Garbage Collector）
+          并发标记扫描垃圾回收器（CMS Garbage Collector）
+          G1垃圾回收器（G1 Garbage Collector）
+
+      垃圾回收机制:
+          Java的垃圾回收机制中，首先需要确定哪些对象需要进行垃圾回收，这里通常采用可达性分析来进行判断。
+          这个算法的基本思想是设置一系列对象作为起点，称为GC Roots节点，搜索建立引用链，当一个对象到GC Roots没有任何引用链相连时，
+          则证明此对象是不可用的。在进行可达性分析时，需要让整个系统冻结在某个时间点，对外则表现为所有工作进程都停止，
+          如此才可以准确获取所有GC Roots，这个过程称为stop the world。此外，引用计数器算法也可以判断对象是否存活，
+          虽然该算法效率较高，但如果存在对象间的循环引用，即使这些对象不可访问，也存在无法回收的情况.
+          链接：https://zhuanlan.zhihu.com/p/36817277
+
+
+   3. Java内存区域管理
+        Java内存区域包括两部分：由所有线程共享的数据区和线程隔离的数据区.
+        所有线程共享的数据区:堆内存和方法区.
+        线程隔离的数据区:包括虚拟机栈、本地方法栈和程序计数器.
+        程序计数器可以指示当前线程所执行的字节码的行号，字节码解释器会通过更改计数器的值来选取下一条需要执行的字节码指令。
+        每个线程的程序计数器都是独立的，确保各线程间计数器互不影响。虚拟机栈也是线程私有的，生命周期和线程相同，
+        每个方法执行时会创建一个栈针、当前执行方法的局部变量表、操作数、动态链接、方法出口等信息都存储在该区域中。
+        方法的调用和返回对应的栈针在虚拟机栈中的入栈和出栈操作中。本地方法栈的作用与虚拟机栈类似，
+        不过本地方法栈存储的是调用native方法时使用的数据结构。方法区是各个线程共享的内存区域，
+        它用于存储已被虚拟机加载的类信息、常量和静态变量等数据。堆也是共享内存区域，存储对象实例、JVM的垃圾回收等。
+        链接：https://zhuanlan.zhihu.com/p/36817277
+
+
+分布式:
+    Java事务API（ Java Transaction API ，简称JTA ）是一个Java企业版的应用程序接口，在Java环境中，允许完成跨越多个XA资源的分布式事务。
+    XA协议 XA是由X/Open组织提出的分布式事务的规范。XA规范主要定义了(全局)事务管理器(Transaction Manager)
+        和(局部)资源管理器(Resource Manager)之间的接口。
+    分布式事务:
+    为了解决大型分布式/微服务系统中的一致性问题，Two-Phase Commit Protocol(2PC) 主要采用2阶段提交.
+        第一阶段：称为准备(prepare)阶段。事务协调者向各个服务应用发送prepare请求，服务应用在得到请求后做预处理操作
+        第二阶段：称为提交(commit)/回滚(rollback)阶段。是指事务真正提交或者回滚的阶段。如果事务协调者发现事务参与者
+        有一个在prepare阶段出现失败，则会要求所有的参与者进行回滚。如果协调者发现所有的参与者都prepare操作都是成功，
+        那么他将向所有的参与者发出提交请求，这时所有参与者才会正式提交。
+    2PC是指分布式事务的两阶段提交，通过2PC来保证多个系统的数据一致性。比如下单过程中，涉及库存、优惠资格等多个资源，
+        下单时会首先预占资源（对应2PC的第一阶段），下单失败后会释放资源（对应2PC的回滚阶段），成功后会使用资源（对应2PC的提交阶段）。
+     github 搜索 tcc,有不少使用2PC的开源库,在生产环境使用待确认?
+
+高并发:
+
+高可用:
+    负载均衡有好几种实现策略，常见的有：
+        随机 (Random)
+        轮询 (RoundRobin)
+        一致性哈希 (ConsistentHash)
+        哈希 (Hash)
+        加权（Weighted）
+
+美团外卖订单中心的演进 https://tech.meituan.com/mt_waimai_order_evolution.html
+
+
+分布式事务 ( DTS ) 你必须知道的事儿:http://www.importnew.com/26212.html
+
+
+
+
+
+
+
+

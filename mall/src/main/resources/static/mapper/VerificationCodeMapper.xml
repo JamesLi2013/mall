@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.mall.mapper.VerificationCodeMapper">
+
+    <insert id="insert" parameterType="com.james.mall.bean.VerificationCode">
+        INSERT INTO verification_code (phone, code, type, valid)
+        VALUES (#{phone,jdbcType=VARCHAR}, #{code,jdbcType=INTEGER},
+                #{type,jdbcType=INTEGER}, #{valid,jdbcType=TINYINT});
+    </insert>
+    <update id="update" parameterType="com.james.mall.bean.VerificationCode">
+        UPDATE verification_code
+        <set>
+            <if test="phone!=null">
+                phone=#{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="code!=null">
+                code=#{code,jdbcType=INTEGER},
+            </if>
+            <if test="type!=null">
+                type=#{type,jdbcType=INTEGER},
+            </if>
+            <if test="valid!=null">
+                valid=#{valid,jdbcType=TINYINT},
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT};
+    </update>
+    <delete id="delete">
+        DELETE FROM verification_code
+        WHERE id = #{id,jdbcType=BIGINT};
+    </delete>
+    <select id="findById" resultType="com.james.mall.bean.VerificationCode">
+        SELECT id,phone,code,type,valid,created,updated
+        FROM verification_code
+        WHERE id = #{id,jdbcType=BIGINT};
+    </select>
+    <select id="findByPhoneOrderByCreatedDesc" resultType="com.james.mall.bean.VerificationCode">
+        SELECT id,phone,code,type,valid,created,updated
+        FROM verification_code WHERE phone = #{phone,jdbcType=VARCHAR} ORDER BY created DESC LIMIT 1;
+    </select>
+
+    <select id="findAll" resultType="com.james.mall.bean.VerificationCode">
+        SELECT id,phone,code,type,valid,created,updated
+        FROM verification_code;
+    </select>
+</mapper>

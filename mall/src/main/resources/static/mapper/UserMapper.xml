@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.mall.mapper.UserMapper">
+    <resultMap id="userDtoId" type="com.james.mall.bean.UserDto">
+        <result property="firstLogin" column="first_login" jdbcType="TINYINT"/>
+        <result property="promoCode" column="promo_code" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="userId" type="com.james.mall.bean.User">
+        <result property="firstLogin" column="first_login" jdbcType="TINYINT"/>
+        <result property="promoCode" column="promo_code" jdbcType="VARCHAR"/>
+        <result property="deviceId" column="device_id" jdbcType="VARCHAR"/>
+        <result property="phoneModel" column="phone_model" jdbcType="VARCHAR"/>
+        <result property="firstLogin" column="first_login" jdbcType="TINYINT"/>
+        <result property="registerTime" column="register_time" jdbcType="TIMESTAMP"/>
+        <result property="lastLogin" column="last_login" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.james.mall.bean.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (id, password, username,
+                          phone, nickname, head, promo_code, device_id, platform,
+                          phone_model, version, salt, first_login,
+                          longitude,latitude,
+                          sex, register_time, last_login)
+        VALUES (#{id,jdbcType=BIGINT},
+            #{password,jdbcType=VARCHAR},
+            #{username,jdbcType=VARCHAR},
+            #{phone,jdbcType=VARCHAR},
+            #{nickname,jdbcType=VARCHAR},
+            #{head,jdbcType=VARCHAR},
+            #{promoCode,jdbcType=VARCHAR},
+            #{deviceId,jdbcType=VARCHAR},
+            #{platform,jdbcType=VARCHAR},
+            #{phoneModel,jdbcType=VARCHAR},
+            #{version,jdbcType=VARCHAR},
+            #{salt,jdbcType=VARCHAR},
+            #{firstLogin,jdbcType=TINYINT},
+            #{longitude,jdbcType=DOUBLE},
+            #{latitude,jdbcType=DOUBLE},
+            #{sex,jdbcType=INTEGER},
+            #{registerTime,jdbcType=TIMESTAMP},
+            #{lastLogin,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="update" parameterType="com.james.mall.bean.User">
+        UPDATE user
+        <set>
+            <if test="password!=null">
+                password=#{password,jdbcType=VARCHAR},
+            </if>
+            <if test="username!=null">
+                username=#{username,jdbcType=VARCHAR},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname!=null">
+                nickname=#{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="head!=null">
+                head=#{head,jdbcType=VARCHAR},
+            </if>
+            <if test="promoCode!=null">
+                promo_code=#{promoCode,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceId!=null">
+                device_id=#{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneModel!=null">
+                phone_model=#{phoneModel,jdbcType=VARCHAR},
+            </if>
+            <if test="salt!=null">
+                salt=#{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="platform!=null">
+                platform=#{platform,jdbcType=VARCHAR},
+            </if>
+            <if test="version!=null">
+                version=#{version,jdbcType=VARCHAR},
+            </if>
+            <if test="firstLogin!=null">
+                first_login=#{firstLogin,jdbcType=TINYINT},
+            </if>
+            <if test="sex!=null">
+                sex=#{sex,jdbcType=INTEGER},
+            </if>
+            <if test="registerTime!=null">
+                register_time=#{registerTime,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLogin!=null">
+                last_login=#{lastLogin,jdbcType=VARCHAR},
+            </if>
+            <if test=" longitude!=null">
+                longitude=#{longitude,jdbcType=DOUBLE},
+            </if>
+            <if test=" latitude!=null">
+                latitude=#{latitude,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id=#{id,jdbcType=BIGINT};
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM user
+        WHERE id = #{id,jdbcType=BIGINT};
+    </delete>
+
+    <select id="findById" resultMap="userId" parameterType="java.lang.Long">
+        SELECT *
+        FROM user
+        WHERE id = #{id,jdbcType=BIGINT};
+    </select>
+
+    <select id="findByUsername" resultMap="userId" parameterType="java.lang.String">
+        SELECT *
+        FROM user
+        WHERE username = #{username,jdbcType=VARCHAR};
+    </select>
+
+    <select id="findUserDtoById" resultMap="userDtoId" parameterType="java.lang.Long">
+        SELECT
+        id,
+        username,
+        phone,
+        nickname,
+        head,
+        promo_code,
+        first_login,
+        sex
+        FROM user
+        WHERE id = #{id,jdbcType=BIGINT};
+    </select>
+
+    <select id="findUserDtoByUsername" resultMap="userDtoId" parameterType="java.lang.String">
+        SELECT
+        id,
+        username,
+        phone,
+        nickname,
+        head,
+        promo_code,
+        first_login,
+        sex
+        FROM user
+        WHERE username = #{username,jdbcType=VARCHAR};
+    </select>
+
+    <select id="findAll" resultMap="userDtoId" parameterType="java.lang.Long">
+        SELECT
+        id,
+        username,
+        phone,
+        nickname,
+        head,
+        promo_code,
+        first_login,
+        sex
+        FROM user;
+    </select>
+
+    <!--<insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">-->
+    <!--INSERT INTO friend (id, age, name, sex) VALUES-->
+    <!--<foreach collection="list" item="item" index="index" separator=",">-->
+    <!--(#{item.id,jdbcType=INTEGER}, #{item.age,jdbcType=INTEGER},#{item.name,jdbcType=VARCHAR},-->
+    <!--#{item.sex,jdbcType=INTEGER})-->
+    <!--</foreach>-->
+
+</mapper>

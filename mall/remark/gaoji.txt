@@ -1,0 +1,334 @@
+作者：小明
+链接：https://zhuanlan.zhihu.com/p/33774158
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+-------------------------------------------------------------
+一、alibaba
+1、开发中Java用了比较多的数据结构有哪些？
+从java.util包展开讲 数据结构与算法--常用数据结构及其Java实现 - QueenKing - SegmentFault 思否
+菜鸟手册 Java 数据结构 | 菜鸟教程
+
+2、谈谈你对HashMap的理解，底层原理的基本实现，HashMap怎么解决碰撞问题的？这些数据结构中是线程安全的吗？假如你回答HashMap不是线程安全的，接着问你有没有线程安全的map，接下来问了conurren包。
+来自美团点评技术团队 Java 8系列之重新认识HashMap
+HashMap不是线程安全的、满足线程安全的话 可以使用Collections的synchronizedMap方法使HashMap具有线程安全的能力或者使用ConcurrentHashMap
+
+3、对JVM熟不熟悉？简单说说类加载过程，里面执行的哪些操作?问了GC和内存管理，平时在tomect里面有没有进行过相关的配置
+Java虚拟机(JVM)知乎话题 -> Java 虚拟机（JVM）
+类的加载过程,感觉刘欣老师的公众号以故事的形式写出来很棒 我是一个Java class
+当然也有比较经典的解释 【深入Java虚拟机】之四：类加载机制 - CSDN博客
+GC和内存管理 这里有一个系列 Java GC系列（1）：Java垃圾回收简介
+tomcat开启GC日志采集 在Tomcat中开启JVM GC日志收集
+
+4、然后问了http协议，get和post的基本区别，接着tcp/ip协议，三次握手，窗口滑动机制。
+get/post 杨光：get和post区别？
+tcp/ip协议知乎话题 TCP/IP
+从网络分层的角度看 ip协议属于网络层 tcp/udp属于传输层
+三次握手 苏莉安：怎样生动描述 TCP 的「三次握手」？
+滑动窗口 郭无心：TCP协议的滑动窗口具体是怎样控制流量的？
+
+5、开发中用了那些数据库？回答mysql，储存引擎有哪些？然后问了我悲观锁和乐观锁问题使用场景、分布式集群实现的原理。
+mysql知乎话题 MySQL
+存储引擎	jaywcjlove/mysql-tutorial
+悲观锁、乐观锁 刘欣老师的公号文章 小白科普：悲观锁和乐观锁
+分布式集群 分布式MySQL集群方案的探索与思考
+
+6、然后问了我springmvc和mybatis的工作原理，有没有看过底层源码？
+springMVC 工作原理 https://www.zhihu.com/question/38696452/answer/267119037
+tuguangquan/mybatis mybatis(轻量级的ORM框架) github一个上对源码中文注释的项目
+有点久了 但是很不错
+
+-------------------------------------------------------割-------------------------------------------------------
+
+二、京东金融面试
+1、Dubbo超时重试；Dubbo超时时间设置
+使用dubbo你所需要注意的
+
+2、如何保障请求执行顺序
+这个我不是很理解考察点在哪里。。
+如果是从前端过来的请求、不应该是由前端来控制吗？在一个请求的回调里边再次发送请求、一层一层套下来
+还是说其他的。。
+
+3、分布式事物与分布式锁（扣款不要出现负数）
+分布式锁的三种实现的对比
+结合阿里巴巴面试第五题
+
+4、分布式session设置
+spring-session + redis spring session实现分布式session
+
+5、执行某操作，前50次成功，第51次失败 a全部回滚 b前50次提交第51次抛异常，ab场景分别如何设置Spring（传播性）
+Spring事务配置及事务的传播性与隔离级别详解
+
+6、Zookeeper有哪些用
+又是刘欣老师的文章 什么是Zookeeper?
+知乎话题 ZooKeeper
+
+7、JVM内存模型
+结合阿里巴巴面试第3题
+
+8、数据库垂直和水平拆分
+数据库垂直拆分 水平拆分 - CSDN博客
+
+9、MyBatis如何分页；如何设置缓存；MySQL分页
+PageHelper pagehelper/Mybatis-PageHelper
+缓存 mybatis的缓存机制（一级缓存二级缓存和刷新缓存）和mybatis整合ehcache - CSDN博客
+
+10、熟悉IO么？与NIO的区别，阻塞与非阻塞的区别
+刘欣老师 Java IO 的自述
+
+11、分布式session一致性
+分布式系统session一致性的问题 - 明志健致远 - 博客园
+(感觉用redis存 脱离web容器 应该就不存在一致性的问题了吧。。 当然这只是我的看法)
+
+12、分布式接口的幂等性设计「不能重复扣款」
+分布式高并发系统如何保证对外接口的幂等性？
+
+-------------------------------------------------------割-------------------------------------------------------
+
+三、美团面试
+1、最近做的比较熟悉的项目是哪个？画一下项目技术架构图
+我们领导喜欢用PPT画 这个工具不错 https://www.gliffy.com/#network-diagrams
+
+2、JVM老年代和新生代的比例？
+JVM内存：年轻代，老年代，永久代 - CSDN博客
+
+3、YGC和FGC发生的具体场景
+YGC是对新生代中的对象进行回收的操作，FGC是对老年代和永久代进行的操作
+成为Java GC专家（3）-如何优化Java垃圾回收机制
+
+4、jstack，jmap，jutil分别的意义？如何线上排查JVM的相关问题？
+JVM调优监控工具 JVM 性能调优监控工具 jps、jstack、jmap、jhat、jstat、hprof 使用详解
+JVM调优 JVM 优化经验总结
+
+5、线程池的构造类的方法的5个参数的具体意义？
+ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+            BlockingQueue<Runnable> workQueue)
+corePoolSize 线程池大小
+maximumPoolSize 线程池最大线程数
+keepAliveTime 表示线程没有任务执行时最多保持多久时间会终止
+unit 时间单位
+workQueue 任务缓存队列及排队策略
+Java并发编程 之 线程池核心ThreadPoolExecutor
+
+6、单机上一个线程池正在处理服务如果忽然断电该怎么办？（正在处理和阻塞队列里的请求怎么处理）？
+重启后通过日志恢复？
+
+7、使用无界阻塞队列会出现什么问题？
+ConcurrentLinkedQueue
+Java并发编程-并发队列（ConcurrentLinkedQueue）的原理分析 - 记忆力不好的博客 - CSDN博客
+
+8、接口如何处理重复请求？9、具体处理方案是什么？
+分布式高并发系统如何保证对外接口的幂等性？
+
+10、如何保证共享变量修改时的原子性？
+Java并发总结（二）：同步与原子性 - PSJay Blog
+感觉跟单例模式的懒汉式实现有点像 synchronized+volatile
+
+11、设计一个对外服务的接口实现类，在1,2,3这三个主机（对应不同IP）上实现负载均衡和顺序轮询机制（考虑并发）
+负载均衡的几种算法Java实现代码 - OPEN代码分享
+
+-------------------------------------------------------割-------------------------------------------------------
+
+四、滴滴面试
+1、自我介绍，技术特点
+技术人员应该发挥有信心且不毛躁的优势~
+
+2、兴趣是什么，优势是什么
+-
+
+3、jvm，jre以及jdk三者之间的关系？
+jvm(Java Virtual Machine) Java虚拟机 https://zh.wikipedia.org/wiki/Java%E8%99%9A%E6%8B%9F%E6%9C%BA
+jre(Java Runtime Environment) Java运行环境 https://zh.wikipedia.org/wiki/JRE
+jdk(Java Development Kit) Java开发工具包 https://zh.wikipedia.org/wiki/JDK
+参考这篇文章里边的一张图 JDK,JRE,JVM区别与联系 - - ITeye博客
+
+4、Dubbo的底层原理，Zookeeper是什么
+刘欣大大的文章 小白科普：服务那点事儿
+Dubbo与Zookeeper 知乎用户：zookeeper在Dubbo中扮演了一个什么角色，起到了什么作用啊？
+
+5、cincurrentMap的机制；TreeMap；Volatil关键字
+cincurrentMap 线程安全的map ConcurrentHashMap使用示例 - mononite
+TreeMap 有序key的map Java TreeMap工作原理及实现
+Volatil关键字 Java并发编程：volatile关键字解析 - 海 子 - 博客园
+
+6、快速排序；广度优先搜索（队列实现）
+快速排序算法_百度百科
+
+7、缓存的雪崩以及穿透的理解？
+缓存穿透，缓存击穿，缓存雪崩解决方案分析 - CSDN博客
+
+8、HashMap的key可以重复吗？
+不可以
+
+9、synchronized和lock的区别？
+深入研究 Java Synchronize 和 Lock 的区别与用法
+
+10.开发一个大型网站你会考虑哪些问题?
+分预算有限和预算无限的情况 ~ 逃...
+作者：小明
+链接：https://zhuanlan.zhihu.com/p/33774158
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+-------------------------------------------------------------
+一、阿里巴巴面试
+1、开发中Java用了比较多的数据结构有哪些？
+从java.util包展开讲 数据结构与算法--常用数据结构及其Java实现 - QueenKing - SegmentFault 思否
+菜鸟手册 Java 数据结构 | 菜鸟教程
+
+2、谈谈你对HashMap的理解，底层原理的基本实现，HashMap怎么解决碰撞问题的？这些数据结构中是线程安全的吗？假如你回答HashMap不是线程安全的，接着问你有没有线程安全的map，接下来问了conurren包。
+来自美团点评技术团队 Java 8系列之重新认识HashMap
+HashMap不是线程安全的、满足线程安全的话 可以使用Collections的synchronizedMap方法使HashMap具有线程安全的能力或者使用ConcurrentHashMap
+
+3、对JVM熟不熟悉？简单说说类加载过程，里面执行的哪些操作?问了GC和内存管理，平时在tomect里面有没有进行过相关的配置
+Java虚拟机(JVM)知乎话题 -> Java 虚拟机（JVM）
+类的加载过程,感觉刘欣老师的公众号以故事的形式写出来很棒 我是一个Java class
+当然也有比较经典的解释 【深入Java虚拟机】之四：类加载机制 - CSDN博客
+GC和内存管理 这里有一个系列 Java GC系列（1）：Java垃圾回收简介
+tomcat开启GC日志采集 在Tomcat中开启JVM GC日志收集
+
+4、然后问了http协议，get和post的基本区别，接着tcp/ip协议，三次握手，窗口滑动机制。
+get/post 杨光：get和post区别？
+tcp/ip协议知乎话题 TCP/IP
+从网络分层的角度看 ip协议属于网络层 tcp/udp属于传输层
+三次握手 苏莉安：怎样生动描述 TCP 的「三次握手」？
+滑动窗口 郭无心：TCP协议的滑动窗口具体是怎样控制流量的？
+
+5、开发中用了那些数据库？回答mysql，储存引擎有哪些？然后问了我悲观锁和乐观锁问题使用场景、分布式集群实现的原理。
+mysql知乎话题 MySQL
+存储引擎	jaywcjlove/mysql-tutorial
+悲观锁、乐观锁 刘欣老师的公号文章 小白科普：悲观锁和乐观锁
+分布式集群 分布式MySQL集群方案的探索与思考
+
+6、然后问了我springmvc和mybatis的工作原理，有没有看过底层源码？
+springMVC 工作原理 https://www.zhihu.com/question/38696452/answer/267119037
+tuguangquan/mybatis mybatis(轻量级的ORM框架) github一个上对源码中文注释的项目
+有点久了 但是很不错
+
+-------------------------------------------------------割-------------------------------------------------------
+
+二、京东金融面试
+1、Dubbo超时重试；Dubbo超时时间设置
+使用dubbo你所需要注意的
+
+2、如何保障请求执行顺序
+这个我不是很理解考察点在哪里。。
+如果是从前端过来的请求、不应该是由前端来控制吗？在一个请求的回调里边再次发送请求、一层一层套下来
+还是说其他的。。
+
+3、分布式事物与分布式锁（扣款不要出现负数）
+分布式锁的三种实现的对比
+结合阿里巴巴面试第五题
+
+4、分布式session设置
+spring-session + redis spring session实现分布式session
+
+5、执行某操作，前50次成功，第51次失败 a全部回滚 b前50次提交第51次抛异常，ab场景分别如何设置Spring（传播性）
+Spring事务配置及事务的传播性与隔离级别详解
+
+6、Zookeeper有哪些用
+又是刘欣老师的文章 什么是Zookeeper?
+知乎话题 ZooKeeper
+
+7、JVM内存模型
+结合阿里巴巴面试第3题
+
+8、数据库垂直和水平拆分
+数据库垂直拆分 水平拆分 - CSDN博客
+
+9、MyBatis如何分页；如何设置缓存；MySQL分页
+PageHelper pagehelper/Mybatis-PageHelper
+缓存 mybatis的缓存机制（一级缓存二级缓存和刷新缓存）和mybatis整合ehcache - CSDN博客
+
+10、熟悉IO么？与NIO的区别，阻塞与非阻塞的区别
+刘欣老师 Java IO 的自述
+
+11、分布式session一致性
+分布式系统session一致性的问题 - 明志健致远 - 博客园
+(感觉用redis存 脱离web容器 应该就不存在一致性的问题了吧。。 当然这只是我的看法)
+
+12、分布式接口的幂等性设计「不能重复扣款」
+分布式高并发系统如何保证对外接口的幂等性？
+
+-------------------------------------------------------割-------------------------------------------------------
+
+三、美团面试
+1、最近做的比较熟悉的项目是哪个？画一下项目技术架构图
+我们领导喜欢用PPT画 这个工具不错 https://www.gliffy.com/#network-diagrams
+
+2、JVM老年代和新生代的比例？
+JVM内存：年轻代，老年代，永久代 - CSDN博客
+
+3、YGC和FGC发生的具体场景
+YGC是对新生代中的对象进行回收的操作，FGC是对老年代和永久代进行的操作
+成为Java GC专家（3）-如何优化Java垃圾回收机制
+
+4、jstack，jmap，jutil分别的意义？如何线上排查JVM的相关问题？
+JVM调优监控工具 JVM 性能调优监控工具 jps、jstack、jmap、jhat、jstat、hprof 使用详解
+JVM调优 JVM 优化经验总结
+
+5、线程池的构造类的方法的5个参数的具体意义？
+ThreadPoolExecutor(int corePoolSize,int maximumPoolSize,long keepAliveTime,TimeUnit unit,
+            BlockingQueue<Runnable> workQueue)
+corePoolSize 线程池大小
+maximumPoolSize 线程池最大线程数
+keepAliveTime 表示线程没有任务执行时最多保持多久时间会终止
+unit 时间单位
+workQueue 任务缓存队列及排队策略
+Java并发编程 之 线程池核心ThreadPoolExecutor
+
+6、单机上一个线程池正在处理服务如果忽然断电该怎么办？（正在处理和阻塞队列里的请求怎么处理）？
+重启后通过日志恢复？
+
+7、使用无界阻塞队列会出现什么问题？
+ConcurrentLinkedQueue
+Java并发编程-并发队列（ConcurrentLinkedQueue）的原理分析 - 记忆力不好的博客 - CSDN博客
+
+8、接口如何处理重复请求？9、具体处理方案是什么？
+分布式高并发系统如何保证对外接口的幂等性？
+
+10、如何保证共享变量修改时的原子性？
+Java并发总结（二）：同步与原子性 - PSJay Blog
+感觉跟单例模式的懒汉式实现有点像 synchronized+volatile
+
+11、设计一个对外服务的接口实现类，在1,2,3这三个主机（对应不同IP）上实现负载均衡和顺序轮询机制（考虑并发）
+负载均衡的几种算法Java实现代码 - OPEN代码分享
+
+-------------------------------------------------------割-------------------------------------------------------
+
+四、滴滴面试
+1、自我介绍，技术特点
+技术人员应该发挥有信心且不毛躁的优势~
+
+2、兴趣是什么，优势是什么
+-
+
+3、jvm，jre以及jdk三者之间的关系？
+jvm(Java Virtual Machine) Java虚拟机 https://zh.wikipedia.org/wiki/Java%E8%99%9A%E6%8B%9F%E6%9C%BA
+jre(Java Runtime Environment) Java运行环境 https://zh.wikipedia.org/wiki/JRE
+jdk(Java Development Kit) Java开发工具包 https://zh.wikipedia.org/wiki/JDK
+参考这篇文章里边的一张图 JDK,JRE,JVM区别与联系 - - ITeye博客
+
+4、Dubbo的底层原理，Zookeeper是什么
+刘欣大大的文章 小白科普：服务那点事儿
+Dubbo与Zookeeper 知乎用户：zookeeper在Dubbo中扮演了一个什么角色，起到了什么作用啊？
+
+5、cincurrentMap的机制；TreeMap；Volatil关键字
+cincurrentMap 线程安全的map ConcurrentHashMap使用示例 - mononite
+TreeMap 有序key的map Java TreeMap工作原理及实现
+Volatil关键字 Java并发编程：volatile关键字解析 - 海 子 - 博客园
+
+6、快速排序；广度优先搜索（队列实现）
+快速排序算法_百度百科
+
+7、缓存的雪崩以及穿透的理解？
+缓存穿透，缓存击穿，缓存雪崩解决方案分析 - CSDN博客
+
+8、HashMap的key可以重复吗？
+不可以
+
+9、synchronized和lock的区别？
+深入研究 Java Synchronize 和 Lock 的区别与用法
+
+10.开发一个大型网站你会考虑哪些问题?
+分预算有限和预算无限的情况 ~ 逃...

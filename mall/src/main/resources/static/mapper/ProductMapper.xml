@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.mall.mapper.ProductMapper">
+    <resultMap id="productMap" type="com.james.mall.bean.Product" >
+        <result property="subTitle" column="sub_title" jdbcType="VARCHAR"/>
+        <result property="minPrice" column="min_price" jdbcType="BIGINT"/>
+        <result property="maxPrice" column="max_price" jdbcType="BIGINT"/>
+        <result property="departurePlace" column="departure_place" jdbcType="VARCHAR"/>
+        <result property="multiImage" column="multi_image" jdbcType="BLOB"/>
+        <result property="majorImage" column="major_image" jdbcType="VARCHAR"/>
+        <result property="descPC" column="desc_pc" jdbcType="BLOB"/>
+        <result property="descMobile" column="desc_mobile" jdbcType="VARCHAR"/>
+        <result property="afterSale" column="after_sale" jdbcType="VARCHAR"/>
+        <result property="productStatus" column="product_status" jdbcType="INTEGER"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="skuIds" column="sku_ids" jdbcType="BLOB"/>
+        <result property="majorSku" column="major_sku" jdbcType="VARCHAR"/>
+        <result property="sellerId" column="seller_id" jdbcType="BIGINT"/>
+        <result property="sellerName" column="seller_name" jdbcType="VARCHAR"/>
+        <result property="sellerIcon" column="seller_icon" jdbcType="VARCHAR"/>
+        <result property="selfSupport" column="self_support" jdbcType="BIT"/>
+    </resultMap>
+
+    <resultMap id="productDtoMap" type="com.james.mall.bean.ProductDto" >
+        <result property="subTitle" column="sub_title" jdbcType="VARCHAR"/>
+        <result property="minPrice" column="min_price" jdbcType="BIGINT"/>
+        <result property="maxPrice" column="max_price" jdbcType="BIGINT"/>
+        <result property="departurePlace" column="departure_place" jdbcType="VARCHAR"/>
+        <result property="majorImage" column="major_image" jdbcType="VARCHAR"/>
+        <result property="productStatus" column="product_status" jdbcType="INTEGER"/>
+        <result property="sellerId" column="seller_id" jdbcType="BIGINT"/>
+        <result property="sellerName" column="seller_name" jdbcType="VARCHAR"/>
+        <result property="sellerIcon" column="seller_icon" jdbcType="VARCHAR"/>
+        <result property="selfSupport" column="self_support" jdbcType="BIT"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.james.mall.bean.Product" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO product (title, sub_title, keyword, props, qualification,colors, meals, price, min_price, max_price, quantity,
+                             sale_count, departure_place, multi_image, major_image,
+                             desc_pc, desc_mobile, after_sale, product_status, start_time,
+                             sku_ids, major_sku, seller_id, seller_name, seller_icon,
+                             self_support)
+        VALUES (#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR},
+                                           #{props,jdbcType=BLOB}, #{qualification,jdbcType=VARCHAR},
+                                           #{colors,jdbcType=VARCHAR},
+                                           #{meals,jdbcType=VARCHAR}, #{price,jdbcType=BIGINT},
+                                           #{minPrice,jdbcType=BIGINT},
+                                           #{maxPrice,jdbcType=BIGINT}, #{quantity,jdbcType=INTEGER},
+            #{saleCount,jdbcType=INTEGER},
+            #{departurePlace,jdbcType=VARCHAR}, #{multiImage,jdbcType=BLOB}, #{majorImage,jdbcType=VARCHAR},
+            #{descPC,jdbcType=BLOB}, #{descMobile,jdbcType=VARCHAR}, #{afterSale,jdbcType=VARCHAR},
+            #{productStatus,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{skuIds,jdbcType=VARCHAR},
+                #{majorSku,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, #{sellerName,jdbcType=VARCHAR},
+                #{sellerIcon,jdbcType=VARCHAR}, #{selfSupport,jdbcType=BIT});
+    </insert>
+    <update id="update" parameterType="com.james.mall.bean.Product">
+        UPDATE product
+        <set>
+            <if test="majorSku!=null">
+                major_sku=#{majorSku,jdbcType=BIGINT},
+            </if>
+            <if test="quantity!=null">
+                quantity=#{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="saleCount!=null">
+                sale_count=#{saleCount,jdbcType=INTEGER},
+            </if>
+            <if test="productStatus!=null">
+                product_status=#{productStatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT};
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM product
+        WHERE id = #{id,jdbcType=BIGINT};
+    </delete>
+    <select id="findById" resultMap="productMap" parameterType="java.lang.Long">
+       SELECT * FROM product WHERE id=#{id,jdbcType=BIGINT};
+    </select>
+
+    <select id="findAll" resultMap="productDtoMap">
+        SELECT id,title, sub_title,qualification,
+            colors, meals, price, min_price, max_price, quantity,
+            sale_count, departure_place,major_image,
+            product_status, seller_id, seller_name, seller_icon,
+            self_support FROM product;
+    </select>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.james.mall.mapper.CategoryMapper">
+    <resultMap id="categoryMap" type="com.james.mall.bean.Category">
+        <result property="catName" column="cat_name" jdbcType="VARCHAR"/>
+        <result property="catLevel" column="cat_level" jdbcType="INTEGER"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+        <result property="bigId" column="big_id" jdbcType="BIGINT"/>
+        <result property="midId" column="mid_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.james.mall.bean.Category">
+        INSERT INTO category (cat_name, cat_level, parent_id, big_id, mid_id)
+        VALUES (#{catName,jdbcType=VARCHAR}, #{catLevel,jdbcType=INTEGER}, #{parentId,jdbcType=BIGINT},
+                #{bigId,jdbcType=BIGINT}, #{midId,jdbcType=BIGINT});
+    </insert>
+    <update id="update" parameterType="com.james.mall.bean.Category">
+        UPDATE category
+        <set>
+            <if test="catName!=null">
+                cat_name=#{catName,jdbcType=VARCHAR},
+            </if>
+            <if test="catLevel!=null">
+                cat_level=#{catLevel,jdbcType=INTEGER},
+            </if>
+            <if test="parentId!=null">
+                parent_id=#{parentId,jdbcType=BIGINT};
+            </if>
+            <if test="bigId!=null">
+                big_id= #{bigId,jdbcType=BIGINT},
+            </if>
+            <if test="midId!=null">
+                mid_id=#{midId,jdbcType=BIGINT},
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT};
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE FROM category
+        WHERE id=#{id,jdbcType=BIGINT};
+    </delete>
+    <select id="findById" resultMap="categoryMap" parameterType="java.lang.Long">
+        SELECT
+            id,
+            cat_name,
+            cat_level,
+            parent_id,
+            big_id,
+            mid_id,
+            created,
+            updated
+        FROM category
+        WHERE id = #{id,jdbcType=BIGINT};
+    </select>
+    <select id="findAll" resultMap="categoryMap">
+        SELECT
+            id,
+            cat_name,
+            cat_level,
+            parent_id,
+            big_id,
+            mid_id,
+            created,
+            updated
+        FROM category;
+    </select>
+</mapper>
